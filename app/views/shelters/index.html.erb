@@ -17,11 +17,11 @@
   </div>
 <% end %>
 
+<div id="admin"> 
 <% if current_page?(admin_shelters_path) %>
   <h2> Shelters with Pending Applications</h2>
   <% @shelters_with_pending_apps.each do |shelter| %>
     <p><%= shelter.name %></p>
   <% end %>
 <% end %>
-
-
+</div>

@@ -110,6 +110,10 @@ RSpec.describe 'the shelters index' do
   describe "admin_shelters index page" do
   
     before(:each) do
+      @shelter_3 = Shelter.create(name: 'Fancy pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
+      @shelter_1 = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+      @shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+     
       @pet_1 = @shelter_1.pets.create(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: false)
       @pet_2 = @shelter_1.pets.create(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
       @pet_3 = @shelter_3.pets.create(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true)
@@ -136,18 +140,28 @@ RSpec.describe 'the shelters index' do
       visit "/admin/shelters"
       
       expect(page).to have_content("Shelters with Pending Applications")
-      expect(page).to have_content(@shelter_3.name, count: 4)
-      expect(page).to have_content(@shelter_1.name, count: 4)
+      expect(page).to have_content(@shelter_3.name, count: 7)
+      expect(page).to have_content(@shelter_1.name, count: 7)
 
       expect(@shelter_1.name).to appear_before("Shelters with Pending Applications")
       expect(@shelter_3.name).to appear_before("Shelters with Pending Applications")
 
       expected_array = all('p').map { |p| p } 
-
-      expect(expected_array[7].text).to eq("Aurora shelter")
-      expect("Shelters with Pending Applications").to appear_before(expected_array[7])
+      expect(expected_array[10].text).to eq("Aurora shelter")
+      expect("Shelters with Pending Applications").to appear_before(expected_array[10])
       expect(expected_array.last.text).to eq("Fancy pets of Colorado")
       expect("Shelters with Pending Applications").to appear_before(expected_array.last)
+    end
+
+    it "lists shelters with pending applications in a section at the bottom alphabetically" do
+    
+      visit "/admin/shelters"
+
+      within "#admin" do 
+        expect(page).to have_content(@shelter_1.name)
+        expect(page).to have_content(@shelter_3.name)
+        expect(@shelter_1.name).to appear_before(@shelter_3.name)
+      end
     end
   end
 end
