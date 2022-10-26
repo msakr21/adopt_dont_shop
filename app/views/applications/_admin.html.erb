@@ -5,16 +5,8 @@
     <p> 
       <div id="pending-<%= application.pet.name %>">
       <%= application.pet.name %>
-      <%= form_with url: "/admin/applications/#{app.id}", method: :patch, local: true do |f| %>
-        <%= f.hidden_field :pet_id, :value => application.pet_id %>
-        <%= f.hidden_field :approved, :value => true %>
-        <%= f.submit "Approve" %>
-      <% end %> 
-      <%= form_with url: "/admin/applications/#{app.id}", method: :patch, local: true do |f| %>
-        <%= f.hidden_field :pet_id, :value => application.pet_id %>
-        <%= f.hidden_field :rejected, :value => true %>
-        <%= f.submit "Reject" %>
-      <% end %>
+      <%= render partial: 'form', locals: {path: "/admin/applications/#{app.id}", method: :patch, app_pet_id: application.pet_id, key: :approved, decision: "Approve"} %>
+      <%= render partial: 'form', locals: {path: "/admin/applications/#{app.id}", method: :patch, app_pet_id: application.pet_id, key: :rejected, decision: "Reject"} %>
       </div> 
     </p>
   <% end %>

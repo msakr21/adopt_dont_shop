@@ -15,10 +15,7 @@
   <% app_pets.each do |pet| %>
     <p> 
     <div style="float: left; width: auto;"><%= pet.name %></div>
-    <%= form_with url: "/applications/#{app.id}", method: :patch, local: true do |f| %>
-      <%= f.hidden_field :pet_id, :value => pet.id %>
-      <%= f.submit "Adopt this Pet" %>
-    <% end %>
+    <%= render partial: 'form', locals: {path: "/applications/#{app.id}", method: :patch, app_pet_id: pet.id, key: nil, decision: "Adopt this Pet"} %>
     </p>
   <% end%>
 

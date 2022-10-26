@@ -1,0 +1,5 @@
+<%= form_with url: path, method: method, local: true do |f| %>
+  <%= f.hidden_field :pet_id, :value => app_pet_id %>
+  <%= f.hidden_field key, :value => true %>
+  <%= f.submit decision %>
+<% end %>
