@@ -26,7 +26,6 @@ class AdminApplicationsController < ApplicationsController
     applications = Pet.find(params[:pet_id]).pet_applications.based_on_ids(params[:pet_id], @application.id)
     applications.each do |application|
       application.update(parameter => params[parameter])
-      application.save
     end
     redirect_to "/admin/applications/#{@application.id}"
   end
