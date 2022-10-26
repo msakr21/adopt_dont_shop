@@ -32,11 +32,15 @@ class Shelter < ApplicationRecord
     adoptable_pets.where('age >= ?', age_filter)
   end
 
-  def self.order_alphabatically_in_reverse
+  def self.order_alphabetically_in_reverse
     find_by_sql("SELECT * FROM shelters ORDER BY shelters.name DESC")
   end
 
   def self.shelters_with_pending_applications
     joins("INNER JOIN pets ON pets.shelter_id = shelters.id").joins("INNER JOIN pet_applications ON pet_applications.pet_id = pets.id").joins("INNER JOIN applications ON pet_applications.application_id = applications.id").distinct.where("status ILIKE ?", "%Pending%")
+  end
+
+  def self.alphabetical_shelters_with_pending_applications
+    shelters_with_pending_applications.order(name: :asc)
   end
 end

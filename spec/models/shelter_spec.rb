@@ -79,7 +79,7 @@ RSpec.describe Shelter, type: :model do
 
     describe '#order_alphabatically_in_reverse' do
       it 'returns shelters in reverse alphabaticaly order' do
-        expect(Shelter.order_alphabatically_in_reverse).to eq([@shelter_2, @shelter_3, @shelter_1])
+        expect(Shelter.order_alphabetically_in_reverse).to eq([@shelter_2, @shelter_3, @shelter_1])
       end
     end
 
@@ -87,6 +87,17 @@ RSpec.describe Shelter, type: :model do
       it 'returns, without duplicates, a list of shelters with pending applications' do
         expect(Shelter.shelters_with_pending_applications).to include(@shelter_3, @shelter_1)
         expect(Shelter.shelters_with_pending_applications).to_not include(@shelter_2)
+      end
+
+      it 'displays the list in alphabetical order' do 
+        shelter_3 = Shelter.create(name: 'Fancy pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
+        shelter_1 = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+        shelter_2 = Shelter.create(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+        shelters = Shelter.alphabetical_shelters_with_pending_applications
+
+        expect(shelters[0].name).to eq(shelter_1.name)
+        expect(shelters[1].name).to eq(shelter_3.name)
+        expect(shelters.length).to eq(2)
       end
     end
   end
