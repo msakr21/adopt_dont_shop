@@ -1,0 +1,31 @@
+<h3> Pets: </h3>
+<% app.pets.each do |pet| %>
+  <p> <%= pet.name %> </p>
+<% end %>
+
+<% if app.status == "In Progress" %>
+  <h2> Add a Pet to this Application </h2>
+  <%= form_with url: "/applications/#{app.id}", method: :get, local: true do |f| %>
+    <%= f.label :search %>
+    <%= f.text_field :search %>
+    <%= f.submit "Search" %>
+  <% end %>
+
+  <h3> Search Results: </h3>
+  <% app_pets.each do |pet| %>
+    <p> 
+    <div style="float: left; width: auto;"><%= pet.name %></div>
+    <%= render partial: 'form', locals: {path: "/applications/#{app.id}", method: :patch, app_pet_id: pet.id, key: nil, decision: "Adopt this Pet"} %>
+    </p>
+  <% end%>
+
+  <% if @display == true %>
+    <h3> Submit Application </h3>
+    <%= form_with url: "/applications/#{app.id}", method: :patch, local: true do |f| %>
+      <%= f.label "Why would you be a good owner for this/these pet(s)?" %><br>
+      <%= f.hidden_field :status, :value => "Pending" %>
+      <%= f.text_field :reason %><br>
+      <%= f.submit "Submit Application" %>
+    <% end %>
+  <% end %>
+<% end %>

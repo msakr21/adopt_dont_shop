@@ -25,11 +25,10 @@ class ApplicationsController < ApplicationController
     application_submission_show_up
     if params[:reason].present?
       @application.update(:status => params[:status], :reason => params[:reason])
-      @application.save
     end
   end
 
-  def new  
+  def new
   end
 
   def create 
